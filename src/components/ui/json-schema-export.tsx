@@ -1,12 +1,10 @@
-'use client'
-
-import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
+import { downloadJsonSchema, generateFormJsonSchema } from '@/lib/json-schema-generator'
 import { Copy, Download } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
-import { generateFormJsonSchema, downloadJsonSchema } from '@/lib/json-schema-generator'
 
 interface JsonSchemaExportProps {
   formFields: any[]

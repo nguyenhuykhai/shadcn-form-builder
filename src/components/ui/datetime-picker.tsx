@@ -1,5 +1,4 @@
-'use client'
-import React, { forwardRef, useCallback, useState } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { useTimescape, type Options } from 'timescape/react'
 
 import { Input } from '@/components/ui/input'

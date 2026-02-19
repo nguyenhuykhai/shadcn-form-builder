@@ -1,30 +1,27 @@
-'use client'
-
-import * as React from 'react'
 import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem as CommandListItem,
   CommandList,
+  CommandItem as CommandListItem
 } from '@/components/ui/command'
-import { GripVertical, MoreVertical } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Reorder, useDragControls } from 'framer-motion'
-import { BlockContent } from './block-content'
-import { EditorBlock, EditorColumn } from '@/types'
 import {
+  componentCommands,
   labelCommands,
   layoutCommands,
-  componentCommands,
 } from '@/constants/menu'
+import { EditorBlock, EditorColumn } from '@/types'
+import { Reorder, useDragControls } from 'framer-motion'
+import { GripVertical, MoreVertical } from 'lucide-react'
+import * as React from 'react'
+import { BlockContent } from './block-content'
 
 const iconSize = 'h-4 w-4'
 
@@ -39,7 +36,6 @@ export default function Editor() {
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     blockId: string,
-    columnId?: string,
   ) => {
     if (e.key === '/' && !showCommand) {
       e.preventDefault()
@@ -170,8 +166,8 @@ export default function Editor() {
               <BlockContent
                 block={block}
                 onChange={(content) => handleContentChange(block.id, content)}
-                onKeyDown={(e, columnId) =>
-                  handleKeyDown(e, block.id, columnId)
+                onKeyDown={(e) =>
+                  handleKeyDown(e, block.id)
                 }
                 onColumnChange={(newColumns) =>
                   handleColumnChange(block.id, newColumns)

@@ -83,7 +83,7 @@ export function ColumnManager({
   }
 
   return (
-    <div className="w-full space-y-2">
+    <div id={blockId} className="w-full space-y-2">
       <div className="grid grid-cols-12 gap-2">
         {columns.map((column) => (
           <div

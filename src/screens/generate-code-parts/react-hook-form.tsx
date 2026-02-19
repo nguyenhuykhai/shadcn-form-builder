@@ -1,6 +1,6 @@
 import { FormFieldType } from '@/types'
 import { generateCodeSnippetWithField } from './field-snippets'
-import { generateZodSchema, generateConstants, generateDefaultValuesString, getZodSchemaString } from './index'
+import { generateConstants, generateDefaultValuesString, getZodSchemaString } from './index'
 
 type FormFieldOrGroup = FormFieldType | FormFieldType[]
 

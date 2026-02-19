@@ -167,7 +167,7 @@ export default function FormBuilder() {
                 addFormField(variant, index)
               }
             />
-            <EmptyListSvg className="mx-auto" />
+            <EmptyListSvg />
           </div>
         )}
       />

@@ -1,19 +1,19 @@
 'use client'
 
-import React from 'react'
 import * as chrono from 'chrono-node'
 import { enUS as localeEnUS, type Locale } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
+import React from 'react'
 import { ActiveModifiers } from 'react-day-picker'
 
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Calendar, CalendarProps } from '@/components/ui/calendar'
+import { Input } from '@/components/ui/input'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Calendar, CalendarProps } from '@/components/ui/calendar'
-import { Input } from '@/components/ui/input'
-import { Button, buttonVariants } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 
@@ -122,11 +122,6 @@ export const formatDateTime = (
 
 const inputBase =
   'bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0 sm:text-sm disabled:cursor-not-allowed disabled:opacity-50'
-
-// @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
-// use this pattern to validate the transformed date string for the natural language input
-const naturalInputValidationPattern =
-  '^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$'
 
 const DEFAULT_SIZE = 96
 
@@ -615,12 +610,7 @@ const DateTimeLocalInput = ({
   const { value, onValueChange, Time } = useSmartDateInput()
 
   const formateSelectedDate = React.useCallback(
-    (
-      date: Date | undefined,
-      selectedDate: Date,
-      m: ActiveModifiers,
-      e: React.MouseEvent,
-    ) => {
+    (_date: Date | undefined, selectedDate: Date, _m: ActiveModifiers, _e: React.MouseEvent) => {
       const parsedDateTime = parseDateTime(selectedDate, locale)
 
       if (parsedDateTime) {

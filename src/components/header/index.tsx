@@ -52,14 +52,14 @@ export default function Header() {
         to="/"
         className="cursor-pointer md:hidden dark:bg-white dark:rounded-lg p-2"
       >
-        <Logo className="w-9 h-9" />
+        <Logo />
       </Link>
       <nav className="hidden md:flex items-center gap-3">
         <Link
           to="/"
           className="cursor-pointer dark:bg-white dark:rounded-lg p-1"
         >
-          <Logo className="w-9 h-9" />
+          <Logo />
         </Link>
         {tabs.map((tab, i) => (
           <Link

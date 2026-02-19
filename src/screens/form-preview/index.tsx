@@ -58,7 +58,7 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
 
       return (
         <div key={index} className="grid grid-cols-12 gap-4">
-          {fieldOrGroup.map((field, subIndex) => (
+          {fieldOrGroup.map((field) => (
             <FormField
               key={field.name}
               control={form.control}

@@ -33,7 +33,7 @@ export function FormWrapper<TFieldValues extends FieldValues>({
   children,
 }: FormWrapperProps<TFieldValues>) {
   const form = useForm<TFieldValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any),
     defaultValues,
   })
 

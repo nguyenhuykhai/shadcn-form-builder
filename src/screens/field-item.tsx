@@ -35,7 +35,7 @@ export const FieldItem = ({
   field,
   formFields,
   setFormFields,
-  updateFormField,
+  updateFormField: _updateFormField,
   openEditDialog,
 }: Props) => {
   const showColumnButton =

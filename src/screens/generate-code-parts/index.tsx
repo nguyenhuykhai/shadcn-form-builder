@@ -479,7 +479,7 @@ export const generateFormCode = (formFields: FormFieldOrGroup[]): string => {
 
   const renderFields = (fields: FormFieldOrGroup[]) => {
     return fields
-      .map((fieldOrGroup, index) => {
+      .map((fieldOrGroup) => {
         if (Array.isArray(fieldOrGroup)) {
           const colSpan = fieldOrGroup.length === 2 ? 6 : 4
           return `

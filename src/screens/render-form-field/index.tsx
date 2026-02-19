@@ -125,7 +125,6 @@ export const renderFormField = (field: FormFieldType, form: any) => {
   const [date, setDate] = useState<Date | undefined>(new Date())
   const [datetime, setDatetime] = useState<Date | undefined>(new Date())
   const [smartDatetime, setSmartDatetime] = useState<Date | null>()
-  const [countryName, setCountryName] = useState<string>('')
   const [stateName, setStateName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [rating, setRating] = useState<number>(0)
@@ -378,7 +377,6 @@ export const renderFormField = (field: FormFieldType, form: any) => {
           </div>
           <LocationSelector
             onCountryChange={(country) => {
-              setCountryName(country?.name || '')
               form.setValue(field.name, [country?.name || '', stateName || ''])
             }}
             onStateChange={(state) => {
@@ -661,7 +659,7 @@ export const renderFormField = (field: FormFieldType, form: any) => {
                 ['Male', 'male'],
                 ['Female', 'female'],
                 ['Other', 'other'],
-              ].map((option, index) => {
+              ].map((option) => {
                 return (
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>

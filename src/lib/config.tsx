@@ -1,7 +1,3 @@
-import { Icons } from '@/components/icons'
-import { FaTwitter } from 'react-icons/fa'
-import { FaYoutube } from 'react-icons/fa6'
-import { RiInstagramFill } from 'react-icons/ri'
 
 export const BLUR_FADE_DELAY = 0.15
 
