@@ -136,6 +136,7 @@ export const FieldItem = ({
     })
   }
 
+  // Effects
   useEffect(() => {
     const newColumnCount = Array.isArray(formFields[index])
       ? formFields[index].length

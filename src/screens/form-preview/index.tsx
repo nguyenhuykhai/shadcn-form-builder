@@ -172,9 +172,6 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
                 {selectedLibrary === 'tanstack-form' && (
                   <SiReactquery className="size-5" />
                 )}
-                {selectedLibrary === 'server-actions' && (
-                  <FaReact className="size-5 text-blue-500" />
-                )}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>

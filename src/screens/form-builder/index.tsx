@@ -1,5 +1,3 @@
-'use client'
-
 import { useState, useEffect } from 'react'
 
 import { FormFieldType } from '@/types'
@@ -19,7 +17,6 @@ export type FormFieldOrGroup = FormFieldType | FormFieldType[]
 
 export default function FormBuilder() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
-
   const [formFields, setFormFields] = useState<FormFieldOrGroup[]>([])
   const [selectedField, setSelectedField] = useState<FormFieldType | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -33,12 +30,7 @@ export default function FormBuilder() {
     return FORM_LIBRARIES.REACT_HOOK_FORM
   })
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('formLibrary', selectedLibrary)
-    }
-  }, [selectedLibrary])
-
+  // Handlers
   const addFormField = (variant: string, index: number) => {
     const newFieldName = `name_${Math.random().toString().slice(-10)}`
 
@@ -117,6 +109,7 @@ export default function FormBuilder() {
     setIsDialogOpen(false)
   }
 
+  // UI
   const FieldSelectorWithSeparator = ({
     addFormField,
   }: {
@@ -127,6 +120,13 @@ export default function FormBuilder() {
       <Separator orientation={isDesktop ? 'vertical' : 'horizontal'} />
     </div>
   )
+
+  // Effects
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('formLibrary', selectedLibrary)
+    }
+  }, [selectedLibrary])
 
   return (
     <section className="md:max-h-screen space-y-8">
@@ -167,7 +167,9 @@ export default function FormBuilder() {
                 addFormField(variant, index)
               }
             />
-            <EmptyListSvg />
+            <div className="w-full h-full flex items-center justify-center">
+              <EmptyListSvg />
+            </div>
           </div>
         )}
       />

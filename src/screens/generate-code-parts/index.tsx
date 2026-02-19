@@ -1,13 +1,12 @@
-import { z, ZodTypeAny } from 'zod'
-import { FormFieldType } from '@/types'
-import { FormLibrary, FORM_LIBRARIES } from '@/constants'
+import { FORM_LIBRARIES, FormLibrary } from '@/constants'
 import { generateFormJsonSchema } from '@/lib/json-schema-generator'
+import { FormFieldType } from '@/types'
+import { z, ZodTypeAny } from 'zod'
 
 import { generateCodeSnippet } from '@/screens/generate-code-field'
-import { generateServerActionsCode } from './server-actions'
+import { generateBringYourOwnCode } from './bring-your-own'
 import { generateReactHookFormCode } from './react-hook-form'
 import { generateTanStackFormCode } from './tanstack-form'
-import { generateBringYourOwnCode } from './bring-your-own'
 
 type FormFieldOrGroup = FormFieldType | FormFieldType[]
 
@@ -551,8 +550,6 @@ export const generateFormCodeForLibrary = (
   library: FormLibrary
 ): string => {
   switch (library) {
-    case FORM_LIBRARIES.SERVER_ACTIONS:
-      return generateServerActionsCode(formFields)
     case FORM_LIBRARIES.REACT_HOOK_FORM:
       return generateReactHookFormCode(formFields)
     case FORM_LIBRARIES.TANSTACK_FORM:

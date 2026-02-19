@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { useState, useRef, useEffect } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'

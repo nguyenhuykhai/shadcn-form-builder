@@ -28,7 +28,7 @@ export type FormFieldType = {
   className?: string
 }
 
-export type FieldType = { name: string; isNew: boolean; index?: number }
+export type FieldType = { name: string; index?: number }
 
 export interface EditorColumn {
   id: string

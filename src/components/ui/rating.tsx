@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { Star, Heart, ThumbsUp } from 'lucide-react'
 import { cn } from '@/lib/utils'

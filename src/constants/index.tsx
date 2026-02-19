@@ -1,7 +1,6 @@
 import { FieldType } from '@/types'
 
 export const FORM_LIBRARIES = {
-  SERVER_ACTIONS: 'server-actions',
   REACT_HOOK_FORM: 'react-hook-form',
   TANSTACK_FORM: 'tanstack-form',
   BRING_YOUR_OWN: 'bring-your-own',
@@ -10,35 +9,34 @@ export const FORM_LIBRARIES = {
 export type FormLibrary = typeof FORM_LIBRARIES[keyof typeof FORM_LIBRARIES]
 
 export const FORM_LIBRARY_LABELS = {
-  [FORM_LIBRARIES.SERVER_ACTIONS]: 'Server Actions',
   [FORM_LIBRARIES.REACT_HOOK_FORM]: 'React Hook Form',
   [FORM_LIBRARIES.TANSTACK_FORM]: 'TanStack Form',
   [FORM_LIBRARIES.BRING_YOUR_OWN]: 'Bring Your Own Form',
 }
 
 export const fieldTypes: FieldType[] = [
-  { name: 'Checkbox', isNew: false },
-  { name: 'Combobox', isNew: false },
-  { name: 'Date Picker', isNew: false },
-  { name: 'Datetime Picker', isNew: false },
-  { name: 'File Input', isNew: false },
-  { name: 'Input', isNew: false },
-  { name: 'Input OTP', isNew: false },
-  { name: 'Location Input', isNew: false },
-  { name: 'Multi Select', isNew: false },
-  { name: 'Password', isNew: false },
-  { name: 'Phone', isNew: false },
-  { name: 'Select', isNew: false },
-  { name: 'Signature Input', isNew: false },
-  { name: 'Signature Pad', isNew: true },
-  { name: 'Slider', isNew: false },
-  { name: 'Smart Datetime Input', isNew: false },
-  { name: 'Switch', isNew: false },
-  { name: 'Tags Input', isNew: false },
-  { name: 'Textarea', isNew: false },
-  { name: 'Rating', isNew: false },
-  { name: 'RadioGroup', isNew: false },
-  { name: 'Credit Card', isNew: false },
+  { name: 'Checkbox' },
+  { name: 'Combobox' },
+  { name: 'Date Picker' },
+  { name: 'Datetime Picker' },
+  { name: 'File Input' },
+  { name: 'Input' },
+  { name: 'Input OTP' },
+  { name: 'Location Input' },
+  { name: 'Multi Select' },
+  { name: 'Password' },
+  { name: 'Phone' },
+  { name: 'Select' },
+  { name: 'Signature Input' },
+  { name: 'Signature Pad' },
+  { name: 'Slider' },
+  { name: 'Smart Datetime Input' },
+  { name: 'Switch' },
+  { name: 'Tags Input' },
+  { name: 'Textarea' },
+  { name: 'Rating' },
+  { name: 'RadioGroup' },
+  { name: 'Credit Card' },
 ]
 
 export const defaultFieldConfig: Record<

@@ -1,5 +1,3 @@
-'use client'
-
 import { motion, Transition, useAnimation, Variants } from 'framer-motion'
 
 const defaultTransition: Transition = {

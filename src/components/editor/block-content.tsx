@@ -1,5 +1,3 @@
-'use client'
-
 import { Input } from '@/components/ui/input'
 import { EditorBlock, EditorColumn } from '@/types'
 import { ColumnManager } from './column-manager'
