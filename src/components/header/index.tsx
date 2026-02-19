@@ -40,6 +40,7 @@ type Tabs = {
 
 const tabs: Tabs[] = [
   { name: 'Playground', href: '/playground', variant: 'smile' },
+  { name: 'Review JSON', href: '/review', variant: 'outline' },
 ]
 
 export default function Header() {

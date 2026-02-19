@@ -3,6 +3,7 @@ import { Toaster } from 'sonner'
 import AllProviders from '@/providers'
 import Header from '@/components/header'
 import FormBuilder from '@/screens/form-builder'
+import ReviewFormJson from '@/screens/review-form-json'
 
 function PlaygroundLayout() {
   return (
@@ -24,6 +25,15 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/playground" replace />} />
             <Route path="/playground" element={<PlaygroundLayout />} />
+            <Route
+              path="/review"
+              element={
+                <>
+                  <Header />
+                  <ReviewFormJson />
+                </>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </main>
