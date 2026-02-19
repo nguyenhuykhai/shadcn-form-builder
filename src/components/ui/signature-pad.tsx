@@ -295,7 +295,6 @@ export default function SignaturePad({
         )}
       >
         <div className="relative border border-input rounded-md overflow-hidden bg-white dark:bg-zinc-900">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={value}
             alt="Signature"

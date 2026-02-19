@@ -1,6 +1,4 @@
-'use client'
-
-import { Link } from 'next-view-transitions'
+import { Link, useLocation } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,7 +16,6 @@ import { LuGithub, LuMenu } from 'react-icons/lu'
 import { SiBuymeacoffee } from 'react-icons/si'
 
 import Logo from '@/assets/logo.svg'
-import { usePathname } from 'next/navigation'
 import { ThemeSwitch } from '../ui/theme-switch'
 
 type Tabs = {
@@ -46,29 +43,30 @@ const tabs: Tabs[] = [
 ]
 
 export default function Header() {
-  const pathname = usePathname()
+  const { pathname } = useLocation()
   const currentBasePath = '/' + pathname.split('/')[1]
 
   return (
     <header className="max-w-5xl mx-auto flex justify-between items-center my-5 px-5 lg:px-0">
       <Link
-        href="/"
+        to="/"
         className="cursor-pointer md:hidden dark:bg-white dark:rounded-lg p-2"
       >
         <Logo className="w-9 h-9" />
       </Link>
       <nav className="hidden md:flex items-center gap-3">
         <Link
-          href="/"
+          to="/"
           className="cursor-pointer dark:bg-white dark:rounded-lg p-1"
         >
           <Logo className="w-9 h-9" />
         </Link>
         {tabs.map((tab, i) => (
           <Link
-            href={tab.href}
+            to={tab.href}
             key={i}
-            target={tab.isNewTab ? '_blank' : '_self'}
+            target={tab.isNewTab ? '_blank' : undefined}
+            rel={tab.isNewTab ? 'noopener noreferrer' : undefined}
             className="relative"
           >
             <Button
@@ -104,34 +102,36 @@ export default function Header() {
             <div className="mx-auto w-full max-w-sm flex flex-col gap-3">
               <DrawerFooter>
                 <div className="flex justify-end space-x-2">
-                  <Link
+                  <a
                     href="https://github.com/hasanharman/form-builder"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Button variant="outline" className="rounded-full p-2">
                       <LuGithub className="text-lg" />
                     </Button>
-                  </Link>
+                  </a>
 
-                  <Link href="https://x.com/strad3r" target="_blank">
+                  <a href="https://x.com/strad3r" target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" className="rounded-full p-2">
                       <FaXTwitter className="text-lg" />
                     </Button>
-                  </Link>
-                  <Link
+                  </a>
+                  <a
                     href="https://buymeacoffee.com/hasanharman"
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Button className="bg-yellow-400 text-black hover:text-white  rounded-full p-2">
                       <SiBuymeacoffee className="text-lg" />
                     </Button>
-                  </Link>
+                  </a>
                   <ThemeSwitch />
                 </div>
 
                 {tabs.map((tab) => (
                   <DrawerClose asChild key={tab.href}>
-                    <Link href={tab.href}>
+                    <Link to={tab.href}>
                       <Button
                         variant="secondary"
                         className={cn('w-full', tab?.className)}
@@ -141,7 +141,7 @@ export default function Header() {
                     </Link>
                   </DrawerClose>
                 ))}
-                <Link href="/playground">
+                <Link to="/playground">
                   <Button className="w-full bg-primary  px-2">
                     Playground
                   </Button>

@@ -8,7 +8,7 @@ export const BLUR_FADE_DELAY = 0.15
 export const siteConfig = {
   name: 'acme.ai',
   description: 'Automate your workflow with AI',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  url: import.meta.env.VITE_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173'),
   keywords: ['SaaS', 'Template', 'Next.js', 'React', 'Tailwind CSS'],
   links: {
     email: 'support@acme.ai',

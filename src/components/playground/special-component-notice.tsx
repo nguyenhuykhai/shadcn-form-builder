@@ -1,5 +1,3 @@
-import { Link } from 'next-view-transitions'
-
 import { SPECIAL_COMPONENTS } from '@/constants/special-components'
 import { FormFieldType } from '@/types'
 
@@ -27,13 +25,14 @@ const SpecialComponentsNotice = ({
       <ul className="list-disc text-sm text-muted-foreground pl-3">
         {usedSpecialComponents.map((component) => (
           <li key={component.variant}>
-            <Link
+            <a
               href={component.url}
               target="_blank"
+              rel="noopener noreferrer"
               className="hover:underline"
             >
               {component.variant}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

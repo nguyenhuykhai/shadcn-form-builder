@@ -3,7 +3,6 @@ import React from 'react'
 import { fieldTypes } from '@/constants'
 import { Button } from '@/components/ui/button'
 import If from '@/components/ui/if'
-import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 
 type FieldSelectorProps = {
@@ -44,11 +43,11 @@ export const FieldSelector: React.FC<FieldSelectorProps> = ({
           />
         </div>
       ))}
-      <Link href="https://shadcnform.featurebase.app/" target="_blank">
+      <a href="https://shadcnform.featurebase.app/" target="_blank" rel="noopener noreferrer">
         <Button className="rounded-full" size="sm">
           Request
         </Button>
-      </Link>
+      </a>
     </div>
   )
 }
