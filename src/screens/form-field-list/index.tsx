@@ -38,6 +38,13 @@ export const FormFieldList: React.FC<FormFieldListProps> = ({
     [setFormFields],
   )
 
+  const handleVerticalReorder = useCallback(
+    (newOrder: FormFieldOrGroup[]) => {
+      setFormFields(newOrder)
+    },
+    [setFormFields],
+  )
+
   // Effects
   useEffect(() => {
     // Deep Clone
@@ -49,7 +56,7 @@ export const FormFieldList: React.FC<FormFieldListProps> = ({
     <div className="mt-3 lg:mt-0">
       <Reorder.Group
         axis="y"
-        onReorder={setFormFields}
+        onReorder={handleVerticalReorder}
         values={formFields}
         className="flex flex-col gap-1"
       >

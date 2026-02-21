@@ -1,19 +1,19 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Highlight, themes } from 'prism-react-renderer'
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { z } from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Highlight, themes } from "prism-react-renderer";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from '@/components/ui/form'
-import If from '@/components/ui/if'
+} from "@/components/ui/form";
+import If from "@/components/ui/if";
 import {
   Select,
   SelectContent,
@@ -22,29 +22,31 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { FormLibrary } from '@/constants'
-import { renderFormField } from '@/screens/render-form-field'
-import { FormFieldType } from '@/types'
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FormLibrary } from "@/constants";
+import { renderFormField } from "@/screens/render-form-field";
+import { FormFieldType } from "@/types";
 
-import { formatJSXCode } from '@/lib/utils'
+import { formatJSXCode } from "@/lib/utils";
 import {
   generateDefaultValues,
   generateFormCodeForLibrary,
   generateZodSchema,
-} from '@/screens/generate-code-parts'
-import { Code, Eye, Files } from 'lucide-react'
-import { SiReacthookform, SiReactquery } from 'react-icons/si'
-import { VscJson } from 'react-icons/vsc'
+} from "@/screens/generate-code-parts";
+import { Code, Copy, Eye, RotateCw } from "lucide-react";
+import { SiReacthookform, SiReactquery } from "react-icons/si";
+import { VscJson } from "react-icons/vsc";
 
-export type FormFieldOrGroup = FormFieldType | FormFieldType[]
+export type FormFieldOrGroup = FormFieldType | FormFieldType[];
 
 export type FormPreviewProps = {
-  formFields: FormFieldOrGroup[]
-  selectedLibrary: FormLibrary
-  onLibraryChange: (library: FormLibrary) => void
-}
+  formFields: FormFieldOrGroup[];
+  selectedLibrary: FormLibrary;
+  onLibraryChange: (library: FormLibrary) => void;
+  handleResetForm: () => void;
+};
 
 const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
   return fields.map((fieldOrGroup, index) => {
@@ -53,19 +55,19 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
       const getColSpan = (totalFields: number) => {
         switch (totalFields) {
           case 2:
-            return 6 // Two columns
+            return 6; // Two columns
           case 3:
-            return 4 // Three columns
+            return 4; // Three columns
           default:
-            return 12 // Single column or fallback
+            return 12; // Single column or fallback
         }
-      }
+      };
 
       return (
         <div key={index} className="grid grid-cols-12 gap-4">
           {fieldOrGroup.map((field) => {
-            const rendered = renderFormField(field, form)
-            const isValid = rendered != null && React.isValidElement(rendered)
+            const rendered = renderFormField(field, form);
+            const isValid = rendered != null && React.isValidElement(rendered);
             return (
               <FormField
                 key={field.name}
@@ -95,13 +97,13 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
                   </FormItem>
                 )}
               />
-            )
+            );
           })}
         </div>
-      )
+      );
     } else {
-      const rendered = renderFormField(fieldOrGroup, form)
-      const isValid = rendered != null && React.isValidElement(rendered)
+      const rendered = renderFormField(fieldOrGroup, form);
+      const isValid = rendered != null && React.isValidElement(rendered);
       return (
         <FormField
           key={index}
@@ -131,24 +133,25 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
             </FormItem>
           )}
         />
-      )
+      );
     }
-  })
-}
+  });
+};
 
 export const FormPreview: React.FC<FormPreviewProps> = ({
   formFields,
   selectedLibrary,
   onLibraryChange,
+  handleResetForm,
 }) => {
-  const formSchema = generateZodSchema(formFields)
+  const formSchema = generateZodSchema(formFields);
 
-  const defaultVals = generateDefaultValues(formFields)
+  const defaultVals = generateDefaultValues(formFields);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultVals,
-  })
+  });
 
   function onSubmit(data: any) {
     try {
@@ -156,24 +159,95 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>,
-      )
+      );
     } catch (error) {
-      console.error('Form submission error', error)
-      toast.error('Failed to submit the form. Please try again.')
+      console.error("Form submission error", error);
+      toast.error("Failed to submit the form. Please try again.");
     }
   }
 
-  const generatedCode = generateFormCodeForLibrary(formFields, selectedLibrary)
-  const formattedCode = formatJSXCode(generatedCode)
+  const generatedCode = generateFormCodeForLibrary(formFields, selectedLibrary);
+  const formattedCode = formatJSXCode(generatedCode);
+  const formFieldsJson = JSON.stringify(formFields, null, 2);
+
+  const copyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success(`${label} copied to clipboard`);
+    } catch {
+      toast.error("Failed to copy");
+    }
+  };
 
   return (
     <div className="w-full h-full col-span-1 rounded-xl flex justify-center">
       <Tabs defaultValue="preview" className="w-full">
         <div className="flex items-center justify-between">
+          <div className="flex items-center w-fit gap-2">
+            {/* Reset Form */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1.5 shrink-0 px-2.5 transition-all duration-200 group hover:bg-white"
+                onClick={handleResetForm}
+            >
+              <RotateCw
+                className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:rotate-45"
+              />
+              <span className="text-sm font-medium">Reset</span>
+            </Button>
+            <Select
+              value={selectedLibrary}
+              onValueChange={(value) => onLibraryChange(value as FormLibrary)}
+            >
+              <SelectTrigger className="h-8 w-auto min-w-40 border-0 px-2.5 focus:ring-0">
+                <SelectValue placeholder="Select library">
+                  <div className="flex items-center gap-2">
+                    {selectedLibrary === "react-hook-form" && (
+                      <>
+                        <SiReacthookform className="size-4 shrink-0"/>
+                        <span className="text-sm font-medium">React Hook Form</span>
+                      </>
+                    )}
+                    {selectedLibrary === "tanstack-form" && (
+                      <>
+                        <SiReactquery className="size-4 shrink-0"/>
+                        <span className="text-sm font-medium">TanStack Form</span>
+                      </>
+                    )}
+                  </div>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel className="text-xs font-medium text-muted-foreground">Form library</SelectLabel>
+                  <SelectItem
+                    value="react-hook-form"
+                    className="cursor-pointer transition-colors focus:bg-muted"
+                  >
+                    <div className="flex items-center gap-2 py-0.5">
+                      <SiReacthookform className="size-4 shrink-0"/>
+                      <span>React Hook Form</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem
+                    value="tanstack-form"
+                    className="cursor-pointer transition-colors focus:bg-muted"
+                  >
+                    <div className="flex items-center gap-2 py-0.5">
+                      <SiReactquery className="size-4 shrink-0" />
+                      <span>TanStack Form</span>
+                    </div>
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
           <TabsList>
             <TabsTrigger value="preview">
               <div className="flex items-center gap-1">
-                <Eye className="size-4" />{' '}
+                <Eye className="size-4" />{" "}
                 <span className="text-sm">Preview</span>
               </div>
             </TabsTrigger>
@@ -190,43 +264,11 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
               </div>
             </TabsTrigger>
           </TabsList>
-
-          <Select
-            value={selectedLibrary}
-            onValueChange={(value) => onLibraryChange(value as FormLibrary)}
-          >
-            <SelectTrigger className="w-auto px-2 gap-2">
-              <SelectValue placeholder="Select library">
-                {selectedLibrary === 'react-hook-form' && (
-                  <SiReacthookform className="size-5 text-[#EC5990]" />
-                )}
-                {selectedLibrary === 'tanstack-form' && (
-                  <SiReactquery className="size-5" />
-                )}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Form Libraries</SelectLabel>
-                <SelectItem value="react-hook-form">
-                  <div className="flex items-center gap-2">
-                    <SiReacthookform className="size-4 text-[#EC5990]" />
-                    <span>React Hook Form</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="tanstack-form">
-                  <div className="flex items-center gap-2">
-                    <SiReactquery className="size-4" />
-                    <span>TanStack Form</span>
-                  </div>
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
         </div>
+
         <TabsContent
           value="preview"
-          className="space-y-4 h-full md:max-h-[70vh] overflow-auto"
+          className="space-y-4 h-full md:max-h-[75vh] overflow-auto"
         >
           <If
             condition={formFields.length > 0}
@@ -242,7 +284,7 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
               </Form>
             )}
             otherwise={() => (
-              <div className="h-[50vh] flex justify-center items-center">
+              <div className="h-full md:max-h-[75vh] flex justify-center items-center">
                 <p>No form element selected yet.</p>
               </div>
             )}
@@ -252,12 +294,28 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
           <If
             condition={formFields.length > 0}
             render={() => (
-              <pre className="p-4 text-sm bg-secondary rounded-lg h-full md:max-h-[70vh] overflow-auto">
-                {JSON.stringify(formFields, null, 2)}
-              </pre>
+              <div className="relative rounded-lg border border-border bg-secondary/50 overflow-hidden">
+                <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border bg-muted/50">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    Form schema (JSON)
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 gap-1.5 shrink-0"
+                    onClick={() => copyToClipboard(formFieldsJson, "JSON")}
+                  >
+                    <Copy className="h-3.5 w-3.5" />
+                    Copy JSON
+                  </Button>
+                </div>
+                <pre className="p-4 text-sm overflow-auto h-[calc(75vh-3.5rem)] md:max-h-[calc(75vh-3.5rem)]">
+                  {formFieldsJson}
+                </pre>
+              </div>
             )}
             otherwise={() => (
-              <div className="h-[50vh] flex justify-center items-center">
+              <div className="h-full md:max-h-[75vh] flex justify-center items-center">
                 <p>No form element selected yet.</p>
               </div>
             )}
@@ -267,18 +325,24 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
           <If
             condition={formFields.length > 0}
             render={() => (
-              <div className="relative">
-                <Button
-                  className="absolute right-2 top-2"
-                  variant="secondary"
-                  size="icon"
-                  onClick={() => {
-                    navigator.clipboard.writeText(formattedCode)
-                    toast.success('Code copied to clipboard!')
-                  }}
-                >
-                  <Files />
-                </Button>
+              <div className="relative rounded-lg border border-border overflow-hidden">
+                <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border bg-muted/50">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {selectedLibrary === "react-hook-form"
+                      ? "React Hook Form"
+                      : "TanStack Form"}{" "}
+                    · TSX
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 gap-1.5 shrink-0"
+                    onClick={() => copyToClipboard(formattedCode, "Code")}
+                  >
+                    <Copy className="h-3.5 w-3.5" />
+                    Copy Code
+                  </Button>
+                </div>
                 <Highlight
                   code={formattedCode}
                   language="tsx"
@@ -292,8 +356,7 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
                     getTokenProps,
                   }: any) => (
                     <pre
-                      className={`${className} p-4 text-sm bg-gray-100 rounded-lg 
-                      h-full md:max-h-[70vh] overflow-auto`}
+                      className={`${className} p-4 text-sm rounded-b-lg overflow-auto h-[calc(75vh-3.5rem)] md:max-h-[calc(75vh-3.5rem)]`}
                       style={style}
                     >
                       {tokens.map((line: any, i: number) => (
@@ -320,5 +383,5 @@ export const FormPreview: React.FC<FormPreviewProps> = ({
         </TabsContent>
       </Tabs>
     </div>
-  )
-}
+  );
+};
