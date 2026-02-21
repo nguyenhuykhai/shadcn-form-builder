@@ -14,7 +14,7 @@ const AllProviders = ({ children }: { children: ReactNode }) => {
     <PostHogProvider client={posthog}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
       >

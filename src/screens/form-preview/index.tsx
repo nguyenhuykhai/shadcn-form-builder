@@ -1,14 +1,19 @@
-import React from 'react'
-import { Highlight, themes } from 'prism-react-renderer'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Highlight, themes } from 'prism-react-renderer'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
-import { renderFormField } from '@/screens/render-form-field'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Form, FormField, FormItem, FormControl } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form'
+import If from '@/components/ui/if'
 import {
   Select,
   SelectContent,
@@ -18,20 +23,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import If from '@/components/ui/if'
-import { FormFieldType } from '@/types'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FormLibrary } from '@/constants'
+import { renderFormField } from '@/screens/render-form-field'
+import { FormFieldType } from '@/types'
 
-import { Code, Eye, Files } from 'lucide-react'
+import { formatJSXCode } from '@/lib/utils'
 import {
-  generateZodSchema,
   generateDefaultValues,
   generateFormCodeForLibrary,
+  generateZodSchema,
 } from '@/screens/generate-code-parts'
-import { formatJSXCode } from '@/lib/utils'
-import { VscJson } from 'react-icons/vsc'
+import { Code, Eye, Files } from 'lucide-react'
 import { SiReacthookform, SiReactquery } from 'react-icons/si'
-import { FaReact } from 'react-icons/fa'
+import { VscJson } from 'react-icons/vsc'
 
 export type FormFieldOrGroup = FormFieldType | FormFieldType[]
 
@@ -58,30 +63,45 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
 
       return (
         <div key={index} className="grid grid-cols-12 gap-4">
-          {fieldOrGroup.map((field) => (
-            <FormField
-              key={field.name}
-              control={form.control}
-              name={field.name}
-              render={({ field: formField }) => (
-                <FormItem
-                  className={`col-span-${getColSpan(fieldOrGroup.length)}`}
-                >
-                  <FormControl>
-                    {React.cloneElement(
-                      renderFormField(field, form) as React.ReactElement,
-                      {
-                        ...formField,
-                      },
+          {fieldOrGroup.map((field) => {
+            const rendered = renderFormField(field, form)
+            const isValid = rendered != null && React.isValidElement(rendered)
+            return (
+              <FormField
+                key={field.name}
+                control={form.control}
+                name={field.name}
+                render={({ field: formField }) => (
+                  <FormItem
+                    className={`col-span-${getColSpan(fieldOrGroup.length)}`}
+                  >
+                    {isValid ? (
+                      <FormControl>
+                        {React.cloneElement(rendered, { ...formField })}
+                      </FormControl>
+                    ) : (
+                      <>
+                        <FormLabel>{field.label || field.name}</FormLabel>
+                        <FormControl>
+                          <div className="min-h-10 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive flex items-center">
+                            Unsupported field type: &quot;{field.variant}&quot;
+                          </div>
+                        </FormControl>
+                        <p className="text-xs text-destructive">
+                          This component type is not available in the preview.
+                        </p>
+                      </>
                     )}
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          ))}
+                  </FormItem>
+                )}
+              />
+            )
+          })}
         </div>
       )
     } else {
+      const rendered = renderFormField(fieldOrGroup, form)
+      const isValid = rendered != null && React.isValidElement(rendered)
       return (
         <FormField
           key={index}
@@ -89,14 +109,25 @@ const renderFormFields = (fields: FormFieldOrGroup[], form: any) => {
           name={fieldOrGroup.name}
           render={({ field: formField }) => (
             <FormItem className="col-span-12">
-              <FormControl>
-                {React.cloneElement(
-                  renderFormField(fieldOrGroup, form) as React.ReactElement,
-                  {
-                    ...formField,
-                  },
-                )}
-              </FormControl>
+              {isValid ? (
+                <FormControl>
+                  {React.cloneElement(rendered, { ...formField })}
+                </FormControl>
+              ) : (
+                <>
+                  <FormLabel>
+                    {fieldOrGroup.label || fieldOrGroup.name}
+                  </FormLabel>
+                  <FormControl>
+                    <div className="min-h-10 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive flex items-center">
+                      Unsupported field type: &quot;{fieldOrGroup.variant}&quot;
+                    </div>
+                  </FormControl>
+                  <p className="text-xs text-destructive">
+                    This component type is not available in the preview.
+                  </p>
+                </>
+              )}
             </FormItem>
           )}
         />

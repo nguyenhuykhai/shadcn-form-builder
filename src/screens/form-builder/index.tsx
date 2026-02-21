@@ -12,6 +12,7 @@ import { FormFieldList } from '@/screens/form-field-list'
 import { FormPreview } from '@/screens/form-preview'
 import { EditFieldDialog } from '@/screens/edit-field-dialog'
 import EmptyListSvg from '@/assets/oc-thinking.svg'
+import { cn } from '@/lib/utils'
 
 export type FormFieldOrGroup = FormFieldType | FormFieldType[]
 
@@ -109,18 +110,6 @@ export default function FormBuilder() {
     setIsDialogOpen(false)
   }
 
-  // UI
-  const FieldSelectorWithSeparator = ({
-    addFormField,
-  }: {
-    addFormField: (variant: string, index?: number) => void
-  }) => (
-    <div className="flex flex-col md:flex-row gap-3">
-      <FieldSelector addFormField={addFormField} />
-      <Separator orientation={isDesktop ? 'vertical' : 'horizontal'} />
-    </div>
-  )
-
   // Effects
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -128,19 +117,35 @@ export default function FormBuilder() {
     }
   }, [selectedLibrary])
 
+  // UI
+  const renderFieldSelector = (
+    <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-start">
+      <FieldSelector
+        addFormField={(variant: string, index: number = 0) =>
+          addFormField(variant, index)
+        }
+      />
+      <Separator
+        orientation={isDesktop ? 'vertical' : 'horizontal'}
+        className={cn(
+          'shrink-0',
+          isDesktop ? 'h-[min(75vh,600px)]' : 'w-full',
+        )}
+      />
+    </div>
+  )
+
   return (
-    <section className="md:max-h-screen space-y-8">
+    <section className="min-h-0 md:max-h-screen space-y-6 md:space-y-8 py-4">
       <If
         condition={formFields.length > 0}
         render={() => (
-          <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-8 md:px-5 h-full">
-            <div className="w-full h-full col-span-1 md:space-x-3 md:max-h-[75vh] flex flex-col md:flex-row ">
-              <FieldSelectorWithSeparator
-                addFormField={(variant: string, index: number = 0) =>
-                  addFormField(variant, index)
-                }
-              />
-              <div className="overflow-y-auto flex-1 ">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-4 px-4 mx-auto">
+            
+            {/* Left: field selector + form list */}
+            <div className="flex flex-col md:flex-row gap-4 min-h-0 md:max-h-[75vh]">
+              {renderFieldSelector}
+              <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-border/80 bg-card/50 p-4 md:p-5">
                 <FormFieldList
                   formFields={formFields}
                   setFormFields={setFormFields}
@@ -149,26 +154,26 @@ export default function FormBuilder() {
                 />
               </div>
             </div>
-            <div className="col-span-1 w-full h-full space-y-3">
+
+            {/* Right: notice + preview */}
+            <div className="flex flex-col gap-4 min-h-0 lg:max-h-[75vh]">
               <SpecialComponentsNotice formFields={formFields} />
-              <FormPreview
-                key={JSON.stringify(formFields)}
-                formFields={formFields}
-                selectedLibrary={selectedLibrary}
-                onLibraryChange={setSelectedLibrary}
-              />
+              <div className="min-h-0 flex-1 rounded-xl border border-border/80 bg-card/50 overflow-hidden">
+                <FormPreview
+                  key={JSON.stringify(formFields)}
+                  formFields={formFields}
+                  selectedLibrary={selectedLibrary}
+                  onLibraryChange={setSelectedLibrary}
+                />
+              </div>
             </div>
           </div>
         )}
         otherwise={() => (
-          <div className="flex flex-col md:flex-row items-center gap-3 md:px-5">
-            <FieldSelectorWithSeparator
-              addFormField={(variant: string, index: number = 0) =>
-                addFormField(variant, index)
-              }
-            />
-            <div className="w-full h-full flex items-center justify-center">
-              <EmptyListSvg />
+          <div className="flex flex-col md:flex-row md:items-center gap-6 px-4 mx-auto">
+            {renderFieldSelector}
+            <div className="flex-1 flex flex-col items-center justify-center py-12 md:py-16 text-center">
+            <EmptyListSvg />
             </div>
           </div>
         )}

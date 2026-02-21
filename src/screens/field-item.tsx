@@ -40,7 +40,7 @@ export const FieldItem = ({
 }: Props) => {
   const showColumnButton =
     subIndex === undefined ||
-    subIndex === (formFields[index] as FormFieldType[]).length - 1
+    subIndex === (formFields[index] as FormFieldType[]).length - 1 && (formFields[index] as FormFieldType[]).length < 3
 
   const path = subIndex !== undefined ? [index, subIndex] : [index]
   const [columnCount, setColumnCount] = useState(() =>

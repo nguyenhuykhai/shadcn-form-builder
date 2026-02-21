@@ -36,7 +36,7 @@ export default function ReviewFormJson() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 py-6 px-5">
+    <div className="mx-auto space-y-6 py-6 px-5">
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold">Review form from JSON</h1>
         <p className="text-muted-foreground text-sm">
